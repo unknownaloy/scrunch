@@ -9,6 +9,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 /// Improvements that can be made include:
 /// - Enabling the desired image size output in MB to be determined or assigned
@@ -141,9 +142,9 @@ class Scrunch {
 
   /// Determine if image should be compressed
   ///
-  /// NOTE: This method uses the [_targetSize] value to determine if the
+  /// NOTE: This method uses the "fileSizeLimit" value to determine if the
   /// image should be compressed. If the image size is greater than the
-  /// [_targetSize], the method will return "true" and the image compressed
+  /// "fileSizeLimit", the method will return "true" and the image compressed
   static Future<bool> _shouldImageBeCompressed(
     File file,
     int fileSizeLimit,
@@ -165,30 +166,19 @@ class Scrunch {
     return pickedFileByte.lengthInBytes;
   }
 
-  // TODO: Use the mime package to handle getting the extension type
   /// This method uses the picked file path and creates a new temporary path
   /// where the compressed image will be written to
   static Future<String> _getCompressPath(File file) async {
     String imagePath = file.path;
 
-    late int extIndex;
-    // late String newPath;
-
-    for (int i = imagePath.length - 1; i > 0; i--) {
-      if (imagePath[i] == ".") {
-        extIndex = i;
-        break;
-      }
-    }
-
-    String extensionType = imagePath.substring(extIndex, imagePath.length);
+    final extension = p.extension(imagePath);
 
     final directory = await getApplicationDocumentsDirectory();
     String localPath = directory.path;
 
     String newImageName = DateTime.now().millisecondsSinceEpoch.toString();
 
-    String fullPath = "$localPath/$newImageName$extensionType";
+    String fullPath = "$localPath/$newImageName$extension";
 
     return fullPath;
   }

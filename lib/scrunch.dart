@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// Improvements that can be made include:
@@ -25,18 +26,32 @@ import 'package:path_provider/path_provider.dart';
 /// when it has completed its given task, but it is still advisable to call the
 /// [killIsolate] method in the off-chance that the isolate could still be running
 class Scrunch {
-  static const int _targetSize = (1024 * 1024) * 5;
-
   FlutterIsolate? _isolate;
   late ReceivePort _receivePort;
 
   /// This method will return a List of image files which has been compressed
   /// using a Isolate
-  Future<List<File>> compressImage(List<File?> files) async {
+  ///
+  /// NOTE: This method has a "target" parameter of type "int" which is an
+  /// optional parameter that defaults to "5" (i.e. 5 megabytes). This is the
+  /// size limit set for each of the image files
+  Future<List<File>?> compressImage(List<File?> files,
+      [int targetSize = 5]) async {
+
+    final filesToCompress = _extractOnlyImageFiles(files);
+
+    if (filesToCompress.isEmpty) {
+      return null; // None of the files passed in are image files
+    }
+
+    final compressFileSizeLimit = (1024 * 1024) * targetSize;
+
     _receivePort = ReceivePort();
 
     _isolate = await FlutterIsolate.spawn(
-        _imageCompressHandler, _receivePort.sendPort);
+      _imageCompressHandler,
+      _receivePort.sendPort,
+    );
 
     SendPort sendPort = await _receivePort.first;
 
@@ -47,7 +62,8 @@ class Scrunch {
     List<String> filePaths = _convertFilesToStringPaths(files);
 
     sendPort.send([
-      filePaths, // Sending the file path
+      filePaths, // <- Sending the file path
+      compressFileSizeLimit, // <- File compress size limit
       answerPort.sendPort,
     ]);
 
@@ -66,7 +82,6 @@ class Scrunch {
 
   /// This method will handle the compressing of the image file
   static Future<void> _imageCompressHandler(SendPort sendPort) async {
-
     /// Result to be return from method
     List<String> result = [];
 
@@ -78,18 +93,25 @@ class Scrunch {
 
     /// Extracting the passed data
     List<String> filePaths = msg[0] as List<String>;
-    SendPort replyPort = msg[1] as SendPort;
+    int fileCompressSizeLimit = msg[1] as int;
+    SendPort replyPort = msg[2] as SendPort;
 
     /// Get the list of files
     List<File> files = _convertStringPathsToFiles(filePaths);
 
     for (File file in files) {
-      bool shouldCompress = await _shouldImageBeCompressed(file);
+      bool shouldCompress = await _shouldImageBeCompressed(
+        file,
+        fileCompressSizeLimit,
+      );
 
       if (!shouldCompress) {
         result.add(file.path);
       } else {
-        int percentageToCompressWith = await _calculateCompressPercentage(file);
+        int percentageToCompressWith = await _calculateCompressPercentage(
+          file,
+          fileCompressSizeLimit,
+        );
         String originalPath = file.path;
         String compressPath = await _getCompressPath(file);
 
@@ -107,10 +129,6 @@ class Scrunch {
         );
 
         if (compressedFile != null) {
-          // int newImageSize = await _getImageSize(compressedFile);
-          //
-          // debugPrint("New Image Size: $newImageSize");
-
           result.add(compressedFile.path);
         } else {
           result.add(file.path);
@@ -126,11 +144,14 @@ class Scrunch {
   /// NOTE: This method uses the [_targetSize] value to determine if the
   /// image should be compressed. If the image size is greater than the
   /// [_targetSize], the method will return "true" and the image compressed
-  static Future<bool> _shouldImageBeCompressed(File file) async {
+  static Future<bool> _shouldImageBeCompressed(
+    File file,
+    int fileSizeLimit,
+  ) async {
     bool shouldBeCompressed = false;
     int imageSize = await _getImageSize(file);
 
-    if (imageSize > _targetSize) {
+    if (imageSize > fileSizeLimit) {
       shouldBeCompressed = true;
     }
 
@@ -174,11 +195,14 @@ class Scrunch {
 
   /// This method calculates the percentage the [FlutterImageCompress]
   /// package should use in compressing the image file
-  static Future<int> _calculateCompressPercentage(File file) async {
+  static Future<int> _calculateCompressPercentage(
+    File file,
+    int targetSize,
+  ) async {
     int imageSize = await _getImageSize(file); // Size of image
 
     /// Percentage image will be compressed with
-    double percentage = (_targetSize / imageSize) * 100;
+    double percentage = (targetSize / imageSize) * 100;
 
     return percentage.toInt();
   }
@@ -220,8 +244,6 @@ class Scrunch {
       int width = imageDimensions.width;
       int height = imageDimensions.height;
 
-      debugPrint("width -> $width == height -> $height");
-
       dimension = {
         "width": width,
         "height": height,
@@ -236,13 +258,40 @@ class Scrunch {
     return dimension;
   }
 
+  /// This method uses the "mime" to check if the file path passed points to
+  /// an image file
+  static bool _isImage(String path) {
+    final mimeType = lookupMimeType(path);
+
+    if (mimeType != null) {
+      return mimeType.startsWith('image/');
+    }
+
+    return false;
+  }
+
+  /// This method uses the [_isImage] method to extract and return the list of
+  /// files passed in that are images
+  ///
+  /// NOTE: The method return an empty list if all the files passed in are not
+  /// image files
+  static List<File> _extractOnlyImageFiles(List<File?> files) {
+    List<File> result = [];
+    for (File? file in files) {
+      if (file != null && _isImage(file.path)) {
+        result.add(file);
+      }
+    }
+
+    return result;
+  }
+
   /// This method terminates the running isolate if it's still active
   void killIsolate() {
     if (_isolate != null) {
       _receivePort.close();
       _isolate!.kill();
       _isolate = null;
-      debugPrint("Isolate terminated successfully");
     }
   }
 }

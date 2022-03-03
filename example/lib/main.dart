@@ -36,12 +36,19 @@ class ScrunchExamplePage extends StatefulWidget {
 class _ScrunchExamplePageState extends State<ScrunchExamplePage> {
   final Scrunch _scrunch = Scrunch();
 
+  /// This variable will hold the example file
   File? _exampleFile;
 
+  /// This is the variable that'll hold the compressed file
   File? _compressedFile;
 
+  /// This variable is used to indicate when the [_exampleFile] is being compressed
+  /// and is used to change compress button text value from "Compress Image" to
+  /// "Compressing..."
   bool _isCompressing = false;
 
+  /// This method uses the "path_provider" package to create a file from the
+  /// example asset image used for illustrating the compression process
   void getImageFileFromAssets() async {
     final byteData = await rootBundle.load('assets/example_image.jpg');
 
@@ -85,11 +92,14 @@ class _ScrunchExamplePageState extends State<ScrunchExamplePage> {
                                 ? () async {
                                     setState(() => _isCompressing = true);
                                     final result = await _scrunch
-                                        .compressImage([_exampleFile!], 6);
+                                        .compressImage([
+                                      _exampleFile!
+                                    ], 8); // <- The minimum allow image size is set to 8 (i.e. 8 megabytes)
 
                                     if (result != null) {
-                                      setState(() =>
-                                      _compressedFile = result[0]);
+                                      setState(
+                                        () => _compressedFile = result[0],
+                                      );
                                     }
                                   }
                                 : null,

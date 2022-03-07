@@ -20,13 +20,24 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package =>
+Run this command:
+```
+flutter pub add scrunch
+```
+Or, add the following to your ***pubspec.yaml*** file:
+```
+dependencies:
+    ...
+    scrunch: LATEST_VERSION
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Import scrunch.dart
+```dart
+import 'package:scrunch/scrunch.dart';
+```
 
 ```dart
 const like = 'sample';

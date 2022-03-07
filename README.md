@@ -1,4 +1,4 @@
-<a href="https://drive.google.com/uc?export=view&id=1BdITSbnDBZAOt1W6PTsECcFeKwKTfGO9"><img alt="Instruction screenshot" src="https://drive.google.com/uc?export=view&id=1BdITSbnDBZAOt1W6PTsECcFeKwKTfGO9" style="width: 64px color: green" title="Click to enlarge picture" />
+<img alt="Instruction screenshot" src="https://drive.google.com/uc?export=view&id=1BdITSbnDBZAOt1W6PTsECcFeKwKTfGO9" style="width: 64px" title="Click to enlarge picture" />
 
 # Scrunch
 

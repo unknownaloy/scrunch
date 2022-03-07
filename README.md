@@ -35,17 +35,22 @@ Quick sample usage example
 ```dart
 final Scrunch scrunch = Scrunch();
 
-try {
-    List<File> imageFilesToCompress = [image1, image2, image3];
-    
-    // The "5" after the List of Files is the size in megabytes that if the image exceeds
-    // compression should take place
-    List<File> compressedImageFiles = await scrunch.compress(imageFilesToCompress, 5);
-} catch(e) {
-    // Handle error 
-} finally {
+List<File> imageFilesToCompress = [image1, image2, image3];
+
+Future<List<File>?> runCompression(List<File?> imageFiles) async {
+  try {
+    // The second argument passed into the function (5) is the size in megabytes that if the image
+    // exceeds compression should take place
+    final compressedFiles = await scrunch.compress(imageFiles, 5);
+    return compressedFiles;
+  } catch (e) {
+    // Handle error
+  } finally {
     scrunch.dispose();
-}
+  }
+} 
+
+final compressedImageFiles = await runCompression(imageFilesToCompress);
 ```
 
 ## Additional information

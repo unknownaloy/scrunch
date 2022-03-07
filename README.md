@@ -1,33 +1,23 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Scrunch
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A package that allows you to compress image files in a separate isolate with the option of
+setting the desired size to trigger compression
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+* Uses flutter_isolate to compress image files in a separate isolate.
+* Ability to set the image size from where compression should take place.
 
 ## Getting started
 
 To use this package =>
 
 Run this command:
-```
+```dart
 flutter pub add scrunch
 ```
 Or, add the following to your ***pubspec.yaml*** file:
-```
+```dart
 dependencies:
     ...
     scrunch: LATEST_VERSION
@@ -42,13 +32,15 @@ import 'package:scrunch/scrunch.dart';
 
 Quick sample usage example
 
-```
+```dart
 final Scrunch scrunch = Scrunch();
 
 try {
     List<File> imageFilesToCompress = [image1, image2, image3];
     
-    List<File> compressedImageFiles = await scrunch.compress(imageFilesToCompress);
+    // The "5" after the List of Files is the size in megabytes that if the image exceeds
+    // compression should take place
+    List<File> compressedImageFiles = await scrunch.compress(imageFilesToCompress, 5);
 } catch(e) {
     // Handle error 
 } finally {
@@ -56,12 +48,7 @@ try {
 }
 ```
 
-```dart
-const like = 'sample';
-```
-
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would 
+like to change.

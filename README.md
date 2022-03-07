@@ -21,6 +21,7 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 ## Getting started
 
 To use this package =>
+
 Run this command:
 ```
 flutter pub add scrunch
@@ -37,6 +38,22 @@ dependencies:
 Import scrunch.dart
 ```dart
 import 'package:scrunch/scrunch.dart';
+```
+
+Quick sample usage example
+
+```
+final Scrunch scrunch = Scrunch();
+
+try {
+    List<File> imageFilesToCompress = [image1, image2, image3];
+    
+    List<File> compressedImageFiles = await scrunch.compress(imageFilesToCompress);
+} catch(e) {
+    // Handle error 
+} finally {
+    scrunch.dispose();
+}
 ```
 
 ```dart

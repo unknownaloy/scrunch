@@ -92,7 +92,7 @@ class _ScrunchExamplePageState extends State<ScrunchExamplePage> {
                                 ? () async {
                                     setState(() => _isCompressing = true);
                                     final result = await _scrunch
-                                        .compressImage([
+                                        .compress([
                                       _exampleFile!
                                     ], 8); // <- The minimum allow image size is set to 8 (i.e. 8 megabytes)
 

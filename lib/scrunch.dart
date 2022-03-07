@@ -19,13 +19,13 @@ import 'package:path/path.dart' as p;
 /// to compress an image in a separate isolate if the size of the image exceeds
 /// the desired size.
 ///
-/// NOTE: When an instance of this class which calls the [compressImage]
-/// method is used, it is equally important to call the [killIsolate] method in
+/// NOTE: When an instance of this class which calls the [compress]
+/// method is used, it is equally important to call the [dispose] method in
 /// the [dispose] method of that class, or if used in a try-catch block, be called
 /// in the finally-block to terminate the isolate, which could still be running in
-/// the background. Though the [compressImage] automatically calls the [killIsolate]
+/// the background. Though the [compress] automatically calls the [dispose]
 /// when it has completed its given task, but it is still advisable to call the
-/// [killIsolate] method in the off-chance that the isolate could still be running
+/// [dispose] method in the off-chance that the isolate could still be running
 class Scrunch {
   FlutterIsolate? _isolate;
   late ReceivePort _receivePort;
@@ -36,7 +36,7 @@ class Scrunch {
   /// NOTE: This method has a "target" parameter of type "int" which is an
   /// optional parameter that defaults to "5" (i.e. 5 megabytes). This is the
   /// size limit set for each of the image files
-  Future<List<File>?> compressImage(List<File?> files,
+  Future<List<File>?> compress(List<File?> files,
       [int targetSize = 5]) async {
 
     final filesToCompress = _extractOnlyImageFiles(files);
@@ -76,7 +76,7 @@ class Scrunch {
     List<File> result = _convertStringPathsToFiles(newFilePaths);
 
     /// Terminating the isolate - Work completed
-    killIsolate();
+    dispose();
 
     return result;
   }
@@ -277,7 +277,7 @@ class Scrunch {
   }
 
   /// This method terminates the running isolate if it's still active
-  void killIsolate() {
+  void dispose() {
     if (_isolate != null) {
       _receivePort.close();
       _isolate!.kill();

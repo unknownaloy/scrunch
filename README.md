@@ -1,6 +1,4 @@
-<img alt="Instruction screenshot" src="https://drive.google.com/uc?export=view&id=1BdITSbnDBZAOt1W6PTsECcFeKwKTfGO9" style="width: 64px" title="Click to enlarge picture" />
-
-# Scrunch
+<img alt="Instruction screenshot" src="https://drive.google.com/uc?export=view&id=1BdITSbnDBZAOt1W6PTsECcFeKwKTfGO9" style="width: 64px" title="Click to enlarge picture" /> # Scrunch
 
 A package that allows you to compress image files in a separate isolate with the option of
 setting the desired size to trigger compression

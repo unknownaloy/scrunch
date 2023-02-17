@@ -1,6 +1,6 @@
 name: scrunch
 description: A package for compressing images and setting an upper limit on the max-size allowed for image files
-version: 1.0.1+1
+version: 1.0.1+2
 homepage: https://github.com/unknownaloy/scrunch
 
 environment:

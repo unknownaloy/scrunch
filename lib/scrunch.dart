@@ -36,9 +36,7 @@ class Scrunch {
   /// NOTE: This method has a "target" parameter of type "int" which is an
   /// optional parameter that defaults to "5" (i.e. 5 megabytes). This is the
   /// size limit set for each of the image files
-  Future<List<File>?> compress(List<File?> files,
-      [int targetSize = 5]) async {
-
+  Future<List<File>?> compress(List<File?> files, [int targetSize = 5]) async {
     final filesToCompress = _extractOnlyImageFiles(files);
 
     if (filesToCompress.isEmpty) {
@@ -169,18 +167,16 @@ class Scrunch {
   /// This method uses the picked file path and creates a new temporary path
   /// where the compressed image will be written to
   static Future<String> _getCompressPath(File file) async {
-    String imagePath = file.path;
-
-    final extension = p.extension(imagePath);
-
     final directory = await getApplicationDocumentsDirectory();
     String localPath = directory.path;
 
     String newImageName = DateTime.now().millisecondsSinceEpoch.toString();
+    String extension = p.extension(file.path);
 
-    String fullPath = "$localPath/$newImageName$extension";
+    File newFile = File('$localPath/$newImageName$extension');
+    await file.copy(newFile.path);
 
-    return fullPath;
+    return newFile.path;
   }
 
   /// This method calculates the percentage the [FlutterImageCompress]

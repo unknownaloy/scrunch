@@ -213,6 +213,7 @@ class Scrunch {
     List<String> result = [];
 
     for (File? file in files) {
+      print("Scrunch - _convertFilesToStringPaths -- file.path -> ${file?.path}");
       if (file != null) {
         result.add(file.path);
       }

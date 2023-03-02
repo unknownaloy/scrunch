@@ -26,6 +26,8 @@ import 'package:path/path.dart' as p;
 /// the background. Though the [compress] automatically calls the [dispose]
 /// when it has completed its given task, but it is still advisable to call the
 /// [dispose] method in the off-chance that the isolate could still be running
+
+@pragma('vm:entry-point')
 class Scrunch {
   FlutterIsolate? _isolate;
   late ReceivePort _receivePort;

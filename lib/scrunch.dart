@@ -27,7 +27,6 @@ import 'package:path/path.dart' as p;
 /// when it has completed its given task, but it is still advisable to call the
 /// [dispose] method in the off-chance that the isolate could still be running
 
-@pragma('vm:entry-point')
 class Scrunch {
   FlutterIsolate? _isolate;
   late ReceivePort _receivePort;
@@ -82,6 +81,7 @@ class Scrunch {
   }
 
   /// This method will handle the compressing of the image file
+  @pragma('vm:entry-point')
   static Future<void> _imageCompressHandler(SendPort sendPort) async {
     /// Result to be return from method
     List<String> result = [];
@@ -213,7 +213,6 @@ class Scrunch {
     List<String> result = [];
 
     for (File? file in files) {
-      print("Scrunch - _convertFilesToStringPaths -- file.path -> ${file?.path}");
       if (file != null) {
         result.add(file.path);
       }

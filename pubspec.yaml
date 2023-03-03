@@ -1,6 +1,6 @@
 name: scrunch
 description: A package for compressing images and setting an upper limit on the max-size allowed for image files
-version: 1.0.1+1
+version: 1.0.1+3
 homepage: https://github.com/unknownaloy/scrunch
 
 environment:
@@ -10,10 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  path_provider: ^2.0.12
+  path_provider: ^2.0.13
   flutter_isolate: ^2.0.4
   flutter_image_compress: ^1.1.3
-  mime: ^1.0.2
+  mime: ^1.0.4
   path: ^1.8.2
 
 dev_dependencies:

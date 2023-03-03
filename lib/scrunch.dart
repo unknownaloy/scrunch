@@ -26,6 +26,7 @@ import 'package:path/path.dart' as p;
 /// the background. Though the [compress] automatically calls the [dispose]
 /// when it has completed its given task, but it is still advisable to call the
 /// [dispose] method in the off-chance that the isolate could still be running
+
 class Scrunch {
   FlutterIsolate? _isolate;
   late ReceivePort _receivePort;
@@ -80,6 +81,7 @@ class Scrunch {
   }
 
   /// This method will handle the compressing of the image file
+  @pragma('vm:entry-point')
   static Future<void> _imageCompressHandler(SendPort sendPort) async {
     /// Result to be return from method
     List<String> result = [];

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.6 <3.0.0"
+  sdk: ">=3.0.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,14 +31,14 @@ dependencies:
     sdk: flutter
   scrunch:
     path: ../
-  logger: ^1.2.2
+  logger: ^1.4.0
   cupertino_icons: ^1.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  path_provider: ^2.0.13
+  path_provider: ^2.0.15
 
 flutter:
   uses-material-design: true

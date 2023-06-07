@@ -27,3 +27,8 @@
 * Updated logger package from version 1.1.0 to 1.2.2
 * Updated the path_provider package from version 2.0.12 to 2.0.13
 * Updated the mime package from version 1.0.2 to 1.0.4
+
+## 1.0.2
+
+* Updated dart SDK minimum environment from 2.18.6 to 3.0.3
+* Updated dependency packages

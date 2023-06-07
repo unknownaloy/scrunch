@@ -1,8 +1,10 @@
 # This is a generated file; do not edit or check into version control.
-flutter_image_compress=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_image_compress-1.1.3/
-flutter_isolate=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_isolate-2.0.4/
-path_provider=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.13/
-path_provider_android=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.23/
-path_provider_foundation=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_foundation-2.1.2/
-path_provider_linux=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.9/
-path_provider_windows=/Users/Chebe/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.4/
+flutter_image_compress=/Users/Chebe/.pub-cache/hosted/pub.dev/flutter_image_compress-2.0.3/
+flutter_image_compress_common=/Users/Chebe/.pub-cache/hosted/pub.dev/flutter_image_compress_common-1.0.1/
+flutter_image_compress_web=/Users/Chebe/.pub-cache/hosted/pub.dev/flutter_image_compress_web-0.1.3/
+flutter_isolate=/Users/Chebe/.pub-cache/hosted/pub.dev/flutter_isolate-2.0.4/
+path_provider=/Users/Chebe/.pub-cache/hosted/pub.dev/path_provider-2.0.15/
+path_provider_android=/Users/Chebe/.pub-cache/hosted/pub.dev/path_provider_android-2.0.27/
+path_provider_foundation=/Users/Chebe/.pub-cache/hosted/pub.dev/path_provider_foundation-2.2.3/
+path_provider_linux=/Users/Chebe/.pub-cache/hosted/pub.dev/path_provider_linux-2.1.11/
+path_provider_windows=/Users/Chebe/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.7/

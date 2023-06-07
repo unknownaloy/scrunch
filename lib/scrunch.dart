@@ -106,7 +106,7 @@ class Scrunch {
         fileCompressSizeLimit,
       );
 
-      if (!shouldCompress) {
+      if (shouldCompress == false) {
         result.add(file.path);
       } else {
         int percentageToCompressWith = await _calculateCompressPercentage(
@@ -121,17 +121,25 @@ class Scrunch {
         int width = imageDimension["width"] as int;
         int height = imageDimension["height"] as int;
 
-        File? compressedFile = await FlutterImageCompress.compressAndGetFile(
-          originalPath,
-          compressPath,
-          quality: percentageToCompressWith,
-          minWidth: width,
-          minHeight: height,
-        );
+        try {
+          XFile? compressedFile = await FlutterImageCompress.compressAndGetFile(
+            originalPath,
+            compressPath,
+            quality: percentageToCompressWith,
+            minWidth: width,
+            minHeight: height,
+          );
 
-        if (compressedFile != null) {
-          result.add(compressedFile.path);
-        } else {
+          if (compressedFile != null) {
+            result.add(compressedFile.path);
+          } else {
+            result.add(file.path);
+          }
+        } on UnsupportedError catch (e) {
+          debugPrint("_imageCompressHandler - UnsupportedError -- e -> $e");
+          result.add(file.path);
+        } catch (e) {
+          debugPrint("_imageCompressHandler - catch -- e -> $e");
           result.add(file.path);
         }
       }
@@ -150,10 +158,15 @@ class Scrunch {
     int fileSizeLimit,
   ) async {
     bool shouldBeCompressed = false;
-    int imageSize = await _getImageSize(file);
 
-    if (imageSize > fileSizeLimit) {
-      shouldBeCompressed = true;
+    try {
+      int imageSize = await _getImageSize(file);
+
+      if (imageSize > fileSizeLimit) {
+        shouldBeCompressed = true;
+      }
+    } catch (e) {
+      debugPrint("_shouldImageBeCompressed - error -- $e");
     }
 
     return shouldBeCompressed;

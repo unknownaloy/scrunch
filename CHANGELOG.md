@@ -32,3 +32,7 @@
 
 * Updated dart SDK minimum environment from 2.18.6 to 3.0.3
 * Updated dependency packages
+
+## 1.0.2+1
+
+* Downgraded dart SDK minimum environment from 3.0.3 to 2.19.0

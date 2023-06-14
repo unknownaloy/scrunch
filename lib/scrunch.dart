@@ -160,11 +160,12 @@ class Scrunch {
     bool shouldBeCompressed = false;
 
     try {
-      int imageSize = await _getImageSize(file);
+      final imageSize = await _getImageSize(file);
 
-      if (imageSize > fileSizeLimit) {
+      if (imageSize != null && imageSize > fileSizeLimit) {
         shouldBeCompressed = true;
       }
+
     } catch (e) {
       debugPrint("_shouldImageBeCompressed - error -- $e");
     }
@@ -172,12 +173,21 @@ class Scrunch {
     return shouldBeCompressed;
   }
 
-  /// The method returns the image size of the passed in image file
-  static Future<int> _getImageSize(File file) async {
-    final pickedFileByte = await file.readAsBytes();
 
-    return pickedFileByte.lengthInBytes;
+  /// The method returns the image size of the passed in image file
+  static Future<int?> _getImageSize(File file) async {
+    if (file.existsSync() == false) {
+      return null;
+    }
+
+    try {
+      final pickedFileByte = await file.readAsBytes();
+      return pickedFileByte.lengthInBytes;
+    } catch (e) {
+      return null;
+    }
   }
+
 
   /// This method uses the picked file path and creates a new temporary path
   /// where the compressed image will be written to
@@ -200,7 +210,11 @@ class Scrunch {
     File file,
     int targetSize,
   ) async {
-    int imageSize = await _getImageSize(file); // Size of image
+    final imageSize = await _getImageSize(file);
+
+    if (imageSize == null) {
+      return 25; // If imageSize is null only compress by 25%
+    }
 
     /// Percentage image will be compressed with
     double percentage = (targetSize / imageSize) * 100;
